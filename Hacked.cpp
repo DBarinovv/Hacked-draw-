@@ -61,11 +61,13 @@ int main ()
                                             };
 
 
-//    Draw_HACKED (arr_of_colors);
-//
-//    txSleep (500);
-//
-//    Draw_Signature (TX_ORANGE);
+    Draw_HACKED (arr_of_colors);
+
+    txSleep (500);
+
+    Draw_Signature (TX_ORANGE);
+
+    txSleep (300);
 
     Draw_Explosion ();
 
@@ -335,15 +337,16 @@ void Draw_HACKED (int arr_of_colors[])
     Draw_E (pos5, gorizontal_coord);
     Draw_D (pos6, gorizontal_coord);
 
-    for (int i = 0; i < 500; i++)
+    for (int i = 0; i < 300; i++)
     {
         txSleep ();
-        Draw_H (pos1, gorizontal_coord, arr_of_colors[rand () % C_cnt_of_colors]);
-        Draw_A (pos2, gorizontal_coord, arr_of_colors[rand () % C_cnt_of_colors]);
-        Draw_C (pos3, gorizontal_coord, arr_of_colors[rand () % C_cnt_of_colors]);
-        Draw_K (pos4, gorizontal_coord, arr_of_colors[rand () % C_cnt_of_colors]);
-        Draw_E (pos5, gorizontal_coord, arr_of_colors[rand () % C_cnt_of_colors]);
-        Draw_D (pos6, gorizontal_coord, arr_of_colors[rand () % C_cnt_of_colors]);
+
+        Draw_H (pos1, gorizontal_coord, arr_of_colors[rand() % C_cnt_of_colors]);
+        Draw_A (pos2, gorizontal_coord, arr_of_colors[rand() % C_cnt_of_colors]);
+        Draw_C (pos3, gorizontal_coord, arr_of_colors[rand() % C_cnt_of_colors]);
+        Draw_K (pos4, gorizontal_coord, arr_of_colors[rand() % C_cnt_of_colors]);
+        Draw_E (pos5, gorizontal_coord, arr_of_colors[rand() % C_cnt_of_colors]);
+        Draw_D (pos6, gorizontal_coord, arr_of_colors[rand() % C_cnt_of_colors]);
     }
 
     Draw_H (pos1, gorizontal_coord, TX_LIGHTRED);
@@ -371,8 +374,8 @@ void Draw_Signature (const int color)
 
 void Draw_Explosion ()
 {
-    const int mid_x_coord = C_max_x_coord / 2;
-    const int mid_y_coord = C_max_y_coord / 2;
+    int mid_x_coord = C_max_x_coord / 2;
+    int mid_y_coord = C_max_y_coord / 2;
 
     int arr_of_colors[7] = {
                              TX_YELLOW,
@@ -384,13 +387,47 @@ void Draw_Explosion ()
                              TX_RED
                              };
 
-    for (int i = 3; i < mid_y_coord - 2; i++)
+    int arr_of_sign[2] = {1, -1};
+
+
+    for (int j = 0; j < 15; j++)
     {
-        for (int k = 0; k < i; k++)
+        if (j == 1)
         {
-            txSetPixel (mid_x_coord + (rand() % k) * (rand() % 2),
-                        mid_y_coord + (rand() % k) * (rand() % 2),
-                        arr_of_colors[rand() % 7]);
+            mid_x_coord = C_max_x_coord / 2 + 100;
+            mid_y_coord = C_max_y_coord / 2 + 100;
+        }
+        else if (j == 2)
+        {
+            mid_x_coord = C_max_x_coord / 2 - 100;
+            mid_y_coord = C_max_y_coord / 2 + 100;
+        }
+        else if (j == 3)
+        {
+            mid_x_coord = C_max_x_coord / 2 + 100;
+            mid_y_coord = C_max_y_coord / 2 - 100;
+        }
+        else if (j == 4)
+        {
+            mid_x_coord = C_max_x_coord / 2 - 100;
+            mid_y_coord = C_max_y_coord / 2 - 100;
+        }
+        else if (j >= 5)
+        {
+            mid_x_coord = rand() % C_max_x_coord;
+            mid_y_coord = rand() % C_max_y_coord;
+        }
+
+        for (int i = 3; i < std::min (C_max_x_coord - mid_x_coord, C_max_y_coord - mid_y_coord); i++)
+        {
+            for (int k = 1; k < i; k++)
+            {
+                txSetPixel (mid_x_coord + (rand() % k) * (arr_of_sign[rand() % 2]),
+                            mid_y_coord + (rand() % k) * (arr_of_sign[rand() % 2]),
+                            arr_of_colors[rand() % 7]);
+            }
+
+            if (j == 0) txSleep();
         }
     }
 }
