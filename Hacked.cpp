@@ -45,7 +45,6 @@ int main ()
                                             TX_CYAN,
                                             TX_RED,
                                             TX_MAGENTA,
-                                            TX_BROWN,
                                             TX_ORANGE,
                                             TX_GRAY,
                                             TX_DARKGRAY,
@@ -69,6 +68,7 @@ int main ()
 
     txSleep (300);
 
+    txPlaySound ("Explosion.wav");
     Draw_Explosion ();
 
     return 0;
@@ -115,7 +115,7 @@ void Draw_H (const int x, const int y, const int color)
             x,                                       y);
 
 
-    Fill_Word (x + 1, y + 1, color);
+    Fill_Word (x + 2, y + 2, color);
 }
 
 //-----------------------------------------------------------------------------
@@ -377,20 +377,21 @@ void Draw_Explosion ()
     int mid_x_coord = C_max_x_coord / 2;
     int mid_y_coord = C_max_y_coord / 2;
 
-    int arr_of_colors[7] = {
+    int arr_of_colors[10] = {
                              TX_YELLOW,
                              TX_LIGHTRED,
                              TX_ORANGE,
                              TX_ORANGE,
                              TX_RED,
                              TX_RED,
+                             TX_RED,
+                             TX_RED,
+                             TX_RED,
                              TX_RED
                              };
 
-    int arr_of_sign[2] = {1, -1};
 
-
-    for (int j = 0; j < 15; j++)
+    for (int j = 0; j < 10; j++)
     {
         if (j == 1)
         {
@@ -422,9 +423,9 @@ void Draw_Explosion ()
         {
             for (int k = 1; k < i; k++)
             {
-                txSetPixel (mid_x_coord + (rand() % k) * (arr_of_sign[rand() % 2]),
-                            mid_y_coord + (rand() % k) * (arr_of_sign[rand() % 2]),
-                            arr_of_colors[rand() % 7]);
+                txSetPixel (mid_x_coord + (rand() % (2 * k) - k),
+                            mid_y_coord + (rand() % (2 * k) - k),
+                            arr_of_colors[rand() % 10]);
             }
 
             if (j == 0) txSleep();
